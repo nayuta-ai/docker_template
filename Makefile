@@ -8,7 +8,7 @@ FORCE_RM=true
 
 build:
 	docker build \
-		-f docker/Dockerfile \
+		-f $(FILE_NAME)/Dockerfile \
 		-t $(IMAGE_NAME) \
 			--no-cache \
 		--force-rm=$(FORCE_RM) \
