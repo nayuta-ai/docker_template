@@ -1,21 +1,31 @@
 PROJECT_NAME=template
-FILE_NAME=python_3_10
 IMAGE_NAME=${USER}_${PROJECT_NAME}
 CONTAINER_NAME=${USER}_${PROJECT_NAME}
-PORT=8887
+PORT=8888
 SHM_SIZE=2g
 FORCE_RM=true
 
-build:
+build_gpu_pytorch:
 	docker build \
-		-f $(FILE_NAME)/Dockerfile \
-		-t $(IMAGE_NAME) \
-			--no-cache \
-		--force-rm=$(FORCE_RM) \
+		--build-arg USER_ID=$(shell id -u) \
+		--build-arg GROUP_ID=$(shell id -g) \
+		-f gpu_pytorch/Dockerfile \
+		-t ${IMAGE_NAME} \
+		--force-rm=${FORCE_RM}\
 		.
-restart: stop start
 
-start:
+build_python:
+	docker build \
+		--build-arg USER_ID=$(shell id -u) \
+		--build-arg GROUP_ID=$(shell id -g) \
+		-f python_3_10/Dockerfile \
+		-t ${IMAGE_NAME} \
+		--force-rm=${FORCE_RM}\
+		.
+
+restart: stop run
+
+run:
 	docker run \
 		-dit \
 		-v $(PWD):/workspace \
@@ -25,10 +35,14 @@ start:
 		--shm-size $(SHM_SIZE) \
 		$(IMAGE_NAME)
 
-stop:
-	docker stop $(IMAGE_NAME)
-
-attach:
+exec:
 	docker exec \
 		-it \
 		$(CONTAINER_NAME) bash 
+
+stop:
+	docker stop $(IMAGE_NAME)
+
+run_jupyter:
+	jupyter nbextension enable --py widgetsnbextension
+	jupyter notebook --ip 0.0.0.0 --port ${PORT} --allow-root
