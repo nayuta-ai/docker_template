@@ -1,17 +1,19 @@
 # docker_template
 
 1. Create Docker image
+- GPU Pytorch
 ```
-make build
+make build_gpu_pytorch
+```
+- Python3.10
+```
+make build_python
 ```
 2. Create Docker container
 ```
-make start
+make run
 ```
 3. Enter Docker container
 ```
-make attach
+make exec
 ```
-<br/>
-※ Changing FILE_NAME in Makefile enable us to building other Docker environment <br/>
-e.g) FILE_NAME=python_3_10 -> FILE_NAME=gpu_pytorch
