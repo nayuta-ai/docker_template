@@ -13,8 +13,9 @@ ENV WORK_PATH /workspace
 WORKDIR $WORK_PATH
 ENV PYTHONPATH "/workspace:${PYTHONPATH}"
 ENV PIP_OPTIONS "--no-cache-dir --progress-bar off"
-COPY python_3_10/requirements.txt $WORK_PATH/python_3_10/
-RUN pip install ${PIP_OPTIONS} -r $WORK_PATH/python_3_10/requirements.txt && \
+COPY python_3_10/linux/requirements.txt $WORK_PATH/python_3_10/linux/
+RUN pip install --upgrade pip && \
+    pip install ${PIP_OPTIONS} -r $WORK_PATH/python_3_10/linux/requirements.txt && \
     pip install ${PIP_OPTIONS} -U setuptools
 
 # duser setting
