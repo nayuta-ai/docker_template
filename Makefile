@@ -42,6 +42,7 @@ restart: stop run
 run_gpu_pytorch:
 	docker run \
 		-dit \
+		--gpus all \
 		-v $(PWD):/workspace \
 		-p $(PORT):$(PORT) \
 		--name $(CONTAINER_NAME) \
@@ -53,6 +54,7 @@ run_gpu_pytorch:
 run:
 	docker run \
 		-dit \
+		--gpus all \
 		-v $(PWD):/workspace \
 		-p $(PORT):$(PORT) \
 		--name $(CONTAINER_NAME) \
